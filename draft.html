@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>☀ SunCal</title>
+  <style>
+    *{
+        font-family: "Trebuchet MS",Arial,sans-serif;
+        font-weight: normal;
+        text-align: justify;
+    }
+
+  </style>
+</head>
+
+<body>
+<!--
+  <h1>Horloge</h1>
+-->
+    <div style="width:80%; max-width:900px; margin-left: auto; margin-right: auto; margin-top: 5%;">
+      
+
+    
+    </div>
+</body>
+
+
+<script>
+// Fonction pour convertir degrés en radians
+    function toRadians(degrees) {
+      return degrees * (Math.PI/180);
+    }
+
+// Fonction pour convertir radians en degrés
+    function toDegrees(radians) {
+      return radians * (180/Math.PI);
+    }
+
+// Fonction pour calculer l'heure du lever du soleil
+    function calculateSunrise(latitude, longitude, date) {
+      // Conversion de la latitude et de la longitude en radians
+      var latRad = toRadians(latitude);
+      var lonRad = toRadians(longitude);
+
+      // Conversion de la date en objet Date
+      var sunriseDate = new Date(date);
+
+      // Jour de l'année
+      var N = sunriseDate.getDOY();
+
+      // Heure en temps universel coordonné (UTC)
+      var UT = sunriseDate.getUTCHours() + sunriseDate.getUTCMinutes()/60 + sunriseDate.getUTCSeconds()/3600;
+
+      // Équation du temps
+      var B = (N - 1) * 360 / 365;
+
+      var E = 229.18 * (0.000075 + 0.001868 * Math.cos(toRadians(B)) - 0.032077 * Math.sin(toRadians(B)) - 0.014615 * Math.cos(toRadians(2 * B)) - 0.040849 * Math.sin(toRadians(2 * B)));
+
+      // Déclinaison du soleil
+      var declination = 0.006918 - 0.399912 * Math.cos(toRadians(B)) + 0.070257 * Math.sin(toRadians(B)) - 0.006758 * Math.cos(toRadians(2 * B)) + 0.000907 * Math.sin(toRadians(2 * B)) - 0.002697 * Math.cos(toRadians(3 * B)) + 0.00148 * Math.sin(toRadians(3 * B));
+
+      // Heure solaire moyenne
+      var solarTime = UT + (4 * (longitude - toDegrees(E)) / 60);
+
+      // Angle horaire
+      var hourAngle = toDegrees(Math.acos(Math.cos(toRadians(90.833)) / (Math.cos(latRad) * Math.cos(toRadians(declination))) - Math.tan(latRad) * Math.tan(toRadians(declination))));
+
+      // Heure du lever du soleil en temps solaire
+      var sunriseTime = solarTime - hourAngle;
+
+      // Conversion en heure locale
+      var sunriseLocal = (sunriseTime + 24) % 24;
+
+      // Renvoyer l'heure du lever du soleil
+      return sunriseLocal;
+    }
+
+    // Exemple d'utilisation
+    var latitude = 48.8566; // Exemple: Paris
+    var longitude = 2.3522;
+    var date = '2022-01-01';
+
+    var sunrise = calculateSunrise(latitude, longitude, date);
+
+    console.log("L'heure du lever du soleil le", date, "à la position", latitude, ",", longitude, "est :", sunrise.toFixed(2));
+</script>
+
+
+
