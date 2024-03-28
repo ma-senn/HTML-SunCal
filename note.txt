@@ -1,0 +1,25 @@
+
+https://obswww.unige.ch/Questions_Reponses/R98.html
+Input
+    lo = longitude
+    la = latitude
+
+    jo = jour depuis equinoxe mars
+
+    cl = correction temps
+        gmt +1
+        gmt +2 été
+
+    
+
+calcul
+    to = 2 * pi * jo/365.2422
+
+
+
+
+
+
+
+
+https://soleil-vapeur.org/1-sommaires-et-pdf/1-I-dossier-calculs.pdf
